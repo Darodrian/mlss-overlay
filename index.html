@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Mario &amp; Luigi Overlay &mdash; control</title>
+    <link rel="icon" href="data:," />
+    <link rel="stylesheet" href="css/dashboard.css" />
+  </head>
+  <body>
+    <div class="wrap">
+      <div class="col">
+        <header class="head">
+          <h1>Mario &amp; Luigi Overlay</h1>
+          <div class="status">
+            <span class="dot" id="dot-room"></span>
+            <span id="status-room">No room yet</span>
+          </div>
+          <p class="msg" id="msg" hidden></p>
+        </header>
+
+        <section class="panel">
+          <h2>Setup</h2>
+          <label class="field">
+            <span>Twitch channel</span>
+            <input id="channel" spellcheck="false" autocomplete="off" placeholder="yourusername" />
+          </label>
+          <div class="keybar">
+            <span class="keytext"
+              >Key: <em class="none" id="keynone">not generated</em><code id="keyval" hidden></code></span
+            >
+            <button type="button" id="btn-copy" class="btn primary" disabled>Copy OBS URL</button>
+            <button type="button" id="btn-key" class="btn">Generate key</button>
+          </div>
+        </section>
+
+        <section class="panel">
+          <h2>View</h2>
+          <div class="field">
+            <span>Entrance side</span>
+            <div class="seg" id="entrance">
+              <button type="button" class="segbtn" data-side="left">From the left</button>
+              <button type="button" class="segbtn" data-side="right">From the right</button>
+            </div>
+          </div>
+          <div class="stage-mini is-left" id="stage-mini" aria-hidden="true">
+            <div class="mini-bubble"></div>
+            <div class="mini-char"></div>
+          </div>
+        </section>
+
+        <section class="panel">
+          <h2>Permissions &amp; limits</h2>
+          <label class="chk"><input type="checkbox" data-perm="broadcaster" /> Broadcaster</label>
+          <label class="chk"><input type="checkbox" data-perm="mod" /> Mods</label>
+          <label class="chk"><input type="checkbox" data-perm="vip" /> VIPs</label>
+          <label class="chk"><input type="checkbox" data-perm="subscriber" /> Subscribers</label>
+          <label class="chk"><input type="checkbox" data-perm="everyone" /> Everyone</label>
+
+          <div class="field" style="margin-top: 0.9rem">
+            <span>Cooldown per user &amp; character (seconds)</span>
+            <input id="vCooldown" type="number" min="0" max="600" step="5" />
+          </div>
+
+          <div class="field">
+            <span>Max message length (characters)</span>
+            <input id="vMaxLen" type="number" min="1" max="500" step="1" />
+          </div>
+
+          <div class="row">
+            <button type="button" id="save" class="btn primary">Save settings</button>
+          </div>
+          <p class="note" id="saveNote"></p>
+        </section>
+
+        <section class="panel">
+          <h2>Chat commands</h2>
+          <ul class="cmds">
+            <li>
+              <code class="mario">!mario hello</code><span>Mario walks in and says it</span>
+            </li>
+            <li>
+              <code class="luigi">!luigi hello</code><span>Luigi walks in and says it</span>
+            </li>
+            <li><code class="mario">!mario</code><span>Mario says his default line</span></li>
+          </ul>
+          <table>
+            <tr>
+              <td class="k">Cooldown per user &amp; character</td>
+              <td class="val" id="cCooldown">&ndash;</td>
+            </tr>
+            <tr>
+              <td class="k">Max length</td>
+              <td class="val" id="cMaxLen">&ndash;</td>
+            </tr>
+            <tr>
+              <td class="k">Who can trigger it</td>
+              <td class="val" id="cPerms">&ndash;</td>
+            </tr>
+          </table>
+        </section>
+      </div>
+
+      <div class="col">
+        <section class="panel">
+          <h2>Preview</h2>
+          <div id="preview-shell">
+            <div id="preview-hint" hidden>Click the preview once to let it make sound</div>
+            <iframe
+              id="preview"
+              title="Overlay preview"
+              allow="autoplay"
+              hidden
+            ></iframe>
+          </div>
+          <label class="chk" style="margin-top: 0.6rem">
+            <input type="checkbox" id="previewMute" /> Mute the preview
+          </label>
+        </section>
+
+        <section class="panel">
+          <h2>Say something</h2>
+          <div class="field">
+            <span>Character</span>
+            <div class="seg" id="sayCharacter"></div>
+          </div>
+          <div class="field">
+            <span>Message (empty = that character's default line)</span>
+            <input id="cMessage" placeholder="welcome to the stream!" />
+          </div>
+          <div class="row">
+            <button type="button" id="cSay" class="btn primary">Send to overlay</button>
+            <button type="button" id="cSayPreview" class="btn">Preview only</button>
+          </div>
+          <p class="note" id="sayNote"></p>
+        </section>
+      </div>
+    </div>
+
+    <script type="module" src="js/control.js"></script>
+  </body>
+</html>

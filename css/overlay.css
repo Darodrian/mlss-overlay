@@ -1,0 +1,205 @@
+@font-face {
+  font-family: 'Zpix';
+  src: url('../zpix.woff2') format('woff2');
+  font-display: block;
+}
+
+:root {
+  --tile: 32px; /* one 8px frame tile */
+  --pointer: 64px; /* the 16px tail tile */
+  --bubble-pad: 32px;
+  --bubble-ink: #202020;
+  --font-size: 36px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: transparent;
+}
+
+#stage {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+#sprite {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  image-rendering: pixelated;
+}
+
+/* ---- the 9-slice bubble ---- */
+
+.bubble {
+  position: absolute;
+  left: 0;
+  top: 0;
+  image-rendering: pixelated;
+  /* Hidden, but still laid out: the bubble measures itself from the whole
+     message before it is ever shown. */
+  opacity: 0;
+  visibility: hidden;
+}
+
+.bubble:not(.is-hidden) {
+  opacity: 1;
+  visibility: visible;
+}
+
+.bubble-tile {
+  position: absolute;
+  width: var(--tile);
+  height: var(--tile);
+  background-repeat: no-repeat;
+  background-size: var(--tile) var(--tile);
+  image-rendering: pixelated;
+}
+
+.bubble-tile[data-tile='tl'] {
+  top: 0;
+  left: 0;
+  background-image: url('../box/tl.png');
+}
+
+.bubble-tile[data-tile='t'] {
+  top: 0;
+  left: var(--tile);
+  right: var(--tile);
+  width: auto;
+  background-image: url('../box/t.png');
+  background-size: 100% var(--tile);
+}
+
+.bubble-tile[data-tile='tr'] {
+  top: 0;
+  right: 0;
+  background-image: url('../box/tr.png');
+}
+
+.bubble-tile[data-tile='l'] {
+  top: var(--tile);
+  bottom: var(--tile);
+  left: 0;
+  height: auto;
+  background-image: url('../box/l.png');
+  background-size: var(--tile) 100%;
+}
+
+.bubble-tile[data-tile='c'] {
+  top: var(--tile);
+  bottom: var(--tile);
+  left: var(--tile);
+  right: var(--tile);
+  width: auto;
+  height: auto;
+  background-image: url('../box/c.png');
+  background-size: 100% 100%;
+}
+
+.bubble-tile[data-tile='r'] {
+  top: var(--tile);
+  bottom: var(--tile);
+  right: 0;
+  height: auto;
+  background-image: url('../box/r.png');
+  background-size: var(--tile) 100%;
+}
+
+.bubble-tile[data-tile='bl'] {
+  bottom: 0;
+  left: 0;
+  background-image: url('../box/bl.png');
+}
+
+.bubble-tile[data-tile='b'] {
+  bottom: 0;
+  left: var(--tile);
+  right: var(--tile);
+  width: auto;
+  background-image: url('../box/b.png');
+  background-size: 100% var(--tile);
+}
+
+.bubble-tile[data-tile='br'] {
+  bottom: 0;
+  right: 0;
+  background-image: url('../box/br.png');
+}
+
+/* The tail hangs half its height below the bubble so its blue and dark rows
+   land exactly on the bubble's own bottom border. */
+.bubble-tile[data-tile='p'] {
+  bottom: calc(-1 * var(--pointer) / 2);
+  left: 0;
+  width: var(--pointer);
+  height: var(--pointer);
+  background-image: url('../box/p.png');
+  background-size: var(--pointer) var(--pointer);
+  transform: translateX(-50%);
+}
+
+.bubble-ghost,
+.bubble-text {
+  position: absolute;
+  left: var(--bubble-pad);
+  top: var(--bubble-pad);
+  margin: 0;
+  font-family: 'Zpix', monospace;
+  font-size: var(--font-size);
+  line-height: 40px; /* 10 source px, so every line stays on the 4px grid */
+  white-space: pre-wrap;
+  overflow-wrap: break-word;
+  word-break: normal;
+  text-align: left;
+}
+
+.bubble-ghost {
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.bubble-text {
+  color: var(--bubble-ink);
+}
+
+/* ---- the setup notice ---- */
+
+#setup {
+  position: absolute;
+  inset: 0;
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  padding: 2rem;
+  text-align: center;
+  background: #14110f;
+  color: #f4efe6;
+  font: 16px/1.6 ui-sans-serif, system-ui, sans-serif;
+}
+
+#setup.show {
+  display: flex;
+}
+
+#setup .headline {
+  font-size: 1.25rem;
+  font-weight: 700;
+}
+
+#setup .detail {
+  max-width: 34rem;
+  color: #a89c8c;
+}
